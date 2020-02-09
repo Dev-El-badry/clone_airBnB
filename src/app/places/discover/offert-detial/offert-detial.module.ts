@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { OffertDetialPageRoutingModule } from './offert-detial-routing.module';
 
 import { OffertDetialPage } from './offert-detial.page';
+import { CreateBookingComponent } from '../../../booking/create-booking/create-booking.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { OffertDetialPage } from './offert-detial.page';
     IonicModule,
     OffertDetialPageRoutingModule
   ],
-  declarations: [OffertDetialPage]
+  declarations: [OffertDetialPage, CreateBookingComponent],
+  entryComponents: [CreateBookingComponent]
 })
 export class OffertDetialPageModule {}

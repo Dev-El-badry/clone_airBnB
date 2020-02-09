@@ -1,9 +1,46 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>auth</ion-title>
+    <ion-title>{{!isLoggin ? 'Sign In' : 'Sign Up'}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ion-grid size.sm="6" offset.sm="3">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input type="email" ngModel name="email" required email #emailCtrl="ngModel"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!emailCtrl.valid && emailCtrl.touched" lines="none">
+            <ion-text color="danger">
+              E-mail Field Is Required
+            </ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" ngModel name="password" required minlength="5" #password="ngModel"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!password.valid && password.touched" lines="none">
+            <ion-text color="danger">
+              Password Field Must At Least 5 Leatters.
+            </ion-text>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button fill="outline" type="button" color="secondray" expand="block" (click)="onChangeMode()">Switch To {{isLoggin ? 'Sign In' : 'Sign Up'}}</ion-button>
+          <ion-button  type="submit" color="primary" expand="block" [disabled]="f.invalid">Submit</ion-button>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+   
+  </form>
 
 </ion-content>
