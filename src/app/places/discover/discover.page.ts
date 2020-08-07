@@ -3,6 +3,7 @@ import {SegmentChangeEventDetail} from '@ionic/core';
 import { PlaceService } from '../place.service';
 import { Place } from '../place.model';
 import { MenuController } from '@ionic/angular';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: "app-discover",
@@ -11,16 +12,30 @@ import { MenuController } from '@ionic/angular';
 })
 export class DiscoverPage implements OnInit {
   loadPlaces: Place[];
+  relativePlaces: Place[];
   listedLoadedPlaces: Place[];
+  isLoading: boolean;
   constructor(
     private placeService: PlaceService,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.loadPlaces = this.placeService.Places;
-    this.listedLoadedPlaces = this.placeService.Places.slice(1);
+    this.isLoading = true;
+    this.placeService.Places.subscribe(places => {
+      this.loadPlaces = places;
+      this.relativePlaces = this.loadPlaces;
+      this.listedLoadedPlaces = this.relativePlaces.slice(1);
+    });
     console.log(this.loadPlaces);
+  }
+
+  ionViewWillEnter() {
+  
+    this.placeService.fetchPlaces().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
   goOpenMenu() {
@@ -28,6 +43,16 @@ export class DiscoverPage implements OnInit {
   }
 
   onFilter(event: CustomEvent<SegmentChangeEventDetail>) {
-    console.log(event.detail);
+    if(event.detail.value == 'all') {
+
+      this.relativePlaces = this.loadPlaces;
+      this.listedLoadedPlaces = this.relativePlaces.slice(1);
+
+    } else {
+      this.relativePlaces = this.loadPlaces.filter(place => {
+        return place.userID === this.authService.userID;
+      });
+      this.listedLoadedPlaces = this.relativePlaces.slice(1);
+    }
   }
 }

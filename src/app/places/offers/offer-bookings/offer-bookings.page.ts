@@ -10,14 +10,21 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class OfferBookingsPage implements OnInit {
   place: Place;
+  placeId;
+  isLoading: boolean;
   constructor(private route: ActivatedRoute, private navCtrl: NavController, private placeServie: PlaceService) { }
 
   ngOnInit() {
+    this.isLoading = true;
     this.route.paramMap.subscribe(paramMap => {
       if(!paramMap.has('placeId')){
         this.navCtrl.navigateBack("/places/tabs/offers");
       }
-      this.place = this.placeServie.getPlace(paramMap.get('placeId'));
+      this.placeId = paramMap.get('placeId');
+      this.placeServie.getPlace(paramMap.get('placeId')).subscribe(res => {
+        this.place = res;
+        this.isLoading = false;
+      })
     })
   }
 

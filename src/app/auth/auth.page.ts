@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵCodegenComponentFactoryResolver } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import {LoadingController} from '@ionic/angular';
@@ -43,6 +43,16 @@ export class AuthPage implements OnInit {
       return ;
     }
 
-    this.onLogin();
+    if(!this.isLoggin) {
+    
+      this.auth.signup(form.value.email, form.value.password).subscribe(res => {
+        console.log(res);
+      });
+    } else {
+      console.log('signin');
+      
+      this.onLogin();
+    }
+
   }
 }

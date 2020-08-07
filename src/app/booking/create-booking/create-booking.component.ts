@@ -10,7 +10,7 @@ import { NgForm } from '@angular/forms';
 export class CreateBookingComponent implements OnInit {
   @Input() selectedPlace: Place;
   @Input() selectedMode: 'select' | 'random';
-  @ViewChild('f') form: NgForm;
+  @ViewChild('f', {static: false}) form: NgForm;
   startDate: string;
   endDate: string;
   constructor(private modalCtrl: ModalController) {}
@@ -42,14 +42,17 @@ export class CreateBookingComponent implements OnInit {
           firstName: this.form.value['first-name'],
           lastName: this.form.value['last-name'],
           guestNumber: this.form.value['guest-number'],
-          dateFrom: this.form.value['date-from'],
-          dateTo: this.form.value['date-to']
+          dateFrom: new Date(this.form.value['date-from']),
+          dateTo: new Date(this.form.value['date-to'])
         }
-      }
+        
+      },
+      'confirm'
     );
   }
 
   datesValid() {
+    
     const startDate = new Date(this.form.value['date-from']);
     const endDate = new Date(this.form.value['date-to']);
 

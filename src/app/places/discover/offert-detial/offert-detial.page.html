@@ -3,10 +3,37 @@
         <ion-buttons slot="start">
             <ion-back-button defaultHref="/places/tabs/discover"></ion-back-button>
         </ion-buttons>
-        <ion-title>Offer Detial</ion-title>
+        <ion-title>{{ isLoading ? 'Loading....' : place.title }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <ion-button margin color="primary" (click)="goBook()">Book</ion-button>
+<ion-content no-padding>
+
+<div  *ngIf="isLoading" text-center> 
+    <ion-spinner color="primary"></ion-spinner>
+</div>
+
+<ion-grid no-padding *ngIf="!isLoading">
+    <ion-row>
+        <ion-col no-padding>
+            <ion-img [src]="place.imageURL"></ion-img>
+            <ion-grid>
+                <ion-row>
+                    <ion-col text-center>
+                        <h4>{{ place.title }}</h4>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        
+            <ion-grid *ngIf="isBooking">
+                <ion-row>
+                    <ion-col text-center>
+        
+                        <ion-button margin color="primary" (click)="goBook()">Book</ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 </ion-content>
