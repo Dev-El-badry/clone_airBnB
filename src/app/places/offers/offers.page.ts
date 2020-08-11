@@ -1,41 +1,45 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Place } from '../place.model';
-import { PlaceService } from '../place.service';
-import {IonItemSliding} from '@ionic/angular';
+import { IonItemSliding } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+
+import { PlacesService } from '../places.service';
+import { Place } from '../place.model';
+
 @Component({
   selector: 'app-offers',
   templateUrl: './offers.page.html',
-  styleUrls: ['./offers.page.scss'],
+  styleUrls: ['./offers.page.scss']
 })
 export class OffersPage implements OnInit, OnDestroy {
-  loadPlaces: Place[];
-  placeSub: Subscription;
-  isLoading: boolean = true;
-  constructor(private palceService: PlaceService, private router: Router) { }
+  offers: Place[];
+  isLoading = false;
+  private placesSub: Subscription;
+
+  constructor(private placesService: PlacesService, private router: Router) {}
 
   ngOnInit() {
-    this.placeSub = this.palceService.Places.subscribe(places => {
-      this.loadPlaces = places;
-    })
-    
+    this.placesSub = this.placesService.places.subscribe(places => {
+      this.offers = places;
+    });
   }
 
   ionViewWillEnter() {
-    this.palceService.fetchPlaces().subscribe(() => {
+    this.isLoading = true;
+    this.placesService.fetchPlaces().subscribe(() => {
       this.isLoading = false;
     });
   }
 
-  onEdit(placeId: string, sliding: IonItemSliding) {
-    sliding.close();
-    this.router.navigate(['/', 'places', 'tabs', 'offers', 'edit', placeId]);
-    console.log("Editing Item", placeId);
+  onEdit(offerId: string, slidingItem: IonItemSliding) {
+    slidingItem.close();
+    this.router.navigate(['/', 'places', 'tabs', 'offers', 'edit', offerId]);
+    console.log('Editing item', offerId);
   }
 
   ngOnDestroy() {
-    if(this.placeSub) this.placeSub.unsubscribe();
+    if (this.placesSub) {
+      this.placesSub.unsubscribe();
+    }
   }
-
 }

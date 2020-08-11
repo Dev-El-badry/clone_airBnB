@@ -1,35 +1,25 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
+
 import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'places', pathMatch: 'full' },
+  { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
   {
-    path: "",
-    loadChildren: () =>
-      import("./places/places.module").then(m => m.PlacesPageModule)
-  },
-  {
-    path: "places",
-    loadChildren: () =>
-      import("./places/places.module").then(m => m.PlacesPageModule),
+    path: 'places',
+    loadChildren: './places/places.module#PlacesPageModule',
     canLoad: [AuthGuard]
   },
   {
-    path: "booking",
-    loadChildren: () =>
-      import("./booking/booking.module").then(m => m.BookingPageModule),
+    path: 'bookings',
+    loadChildren: './bookings/bookings.module#BookingsPageModule',
     canLoad: [AuthGuard]
-  },
-  {
-    path: "auth",
-    loadChildren: () => import("./auth/auth.module").then(m => m.AuthPageModule)
   }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

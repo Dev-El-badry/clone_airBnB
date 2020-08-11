@@ -6,12 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./places.page.scss'],
 })
 export class PlacesPage implements OnInit {
+
   constructor() { }
 
   ngOnInit() {
-   
   }
-
-  
 
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { PlacesPage } from './places.page';
 
@@ -9,12 +9,42 @@ const routes: Routes = [
     component: PlacesPage,
     children: [
       {
-        path: 'offers',
-        loadChildren: () => import('./offers/offers.module').then( m => m.OffersPageModule)
+        path: 'discover',
+        children: [
+          {
+            path: '',
+            loadChildren: './discover/discover.module#DiscoverPageModule'
+          },
+          {
+            path: ':placeId',
+            loadChildren:
+              './discover/place-detail/place-detail.module#PlaceDetailPageModule'
+          }
+        ]
       },
       {
-        path: 'discover',
-        loadChildren: () => import('./discover/discover.module').then( m => m.DiscoverPageModule)
+        path: 'offers',
+        children: [
+          {
+            path: '',
+            loadChildren: './offers/offers.module#OffersPageModule'
+          },
+          {
+            path: 'new',
+            loadChildren:
+              './offers/new-offer/new-offer.module#NewOfferPageModule'
+          },
+          {
+            path: 'edit/:placeId',
+            loadChildren:
+              './offers/edit-offer/edit-offer.module#EditOfferPageModule'
+          }
+        ]
+      },
+      {
+        path: '',
+        redirectTo: '/places/tabs/discover',
+        pathMatch: 'full'
       }
     ]
   },
@@ -23,11 +53,10 @@ const routes: Routes = [
     redirectTo: '/places/tabs/discover',
     pathMatch: 'full'
   }
-  
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class PlacesPageRoutingModule {}
+export class PlacesRoutingModule {}

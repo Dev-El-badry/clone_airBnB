@@ -1,14 +1,14 @@
 .map {
-    position:  absolute;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  height: 100%;
+  width: 100%;
 
-    background-color: transparent;
+  background-color: transparent;
 
-    opacity: 0;
-    transition: opacity 150ms ease-in;
+  opacity: 0;
+  transition: opacity 150ms ease-in;
 }
 
-.map.visiable {
-    opacity: 1;
+.map.visible {
+  opacity: 1;
 }
